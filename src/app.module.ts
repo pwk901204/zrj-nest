@@ -1,7 +1,7 @@
 /*
  * @Author: wkpan2
  * @Date: 2021-08-07 09:18:07
- * @LastEditTime: 2021-08-19 17:22:02
+ * @LastEditTime: 2021-08-24 18:13:42
  * @Description:
  */
 import * as path from 'path';
@@ -23,6 +23,8 @@ import { AuthModule } from './modules/auth/auth.module';
 
 import statusMonitorConfig from './config/statusMonitor';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -59,7 +61,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     //   entities: [],
     //   synchronize: true,
     // }),
+    ScheduleModule.forRoot(),
     // CatsModule,
+    TasksModule,
     HelloModule,
     UsersModule,
     ExceptionModule,
