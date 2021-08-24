@@ -1,7 +1,7 @@
 /*
  * @Author: wkpan2
  * @Date: 2021-08-07 09:18:07
- * @LastEditTime: 2021-08-15 22:27:29
+ * @LastEditTime: 2021-08-19 17:22:02
  * @Description:
  */
 import * as path from 'path';
@@ -22,11 +22,15 @@ import { StatusMonitorModule } from 'nest-status-monitor';
 import { AuthModule } from './modules/auth/auth.module';
 
 import statusMonitorConfig from './config/statusMonitor';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
-
+    TypeOrmModule.forRootAsync({
+      useFactory: (config: ConfigService) => config.get('database'),
+      inject: [ConfigService],
+    }),
     StatusMonitorModule.setUp(statusMonitorConfig),
     MailerModule.forRootAsync({
       // useFactory: () => ({
