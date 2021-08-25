@@ -1,7 +1,7 @@
 /*
  * @Author: wkpan2
  * @Date: 2021-08-07 09:18:07
- * @LastEditTime: 2021-08-24 18:13:42
+ * @LastEditTime: 2021-08-25 22:38:28
  * @Description:
  */
 import * as path from 'path';
@@ -25,6 +25,8 @@ import statusMonitorConfig from './config/statusMonitor';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './modules/tasks/tasks.module';
+import { BullModule } from '@nestjs/bull';
+import { AudioModule } from './jobs/audio/audio.module';
 
 @Module({
   imports: [
@@ -61,8 +63,19 @@ import { TasksModule } from './modules/tasks/tasks.module';
     //   entities: [],
     //   synchronize: true,
     // }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+      // useFactory: (config: ConfigService) => ({
+      //   redis: config.get('redis'),
+      // }),
+      // inject: [ConfigService],
+    }),
     ScheduleModule.forRoot(),
     // CatsModule,
+    AudioModule,
     TasksModule,
     HelloModule,
     UsersModule,
