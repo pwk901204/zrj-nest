@@ -36,6 +36,7 @@
     "bull": "^3.29.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "compressing": "^1.5.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "nest-status-monitor": "^0.1.4",

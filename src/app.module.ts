@@ -1,7 +1,7 @@
 /*
  * @Author: wkpan2
  * @Date: 2021-08-07 09:18:07
- * @LastEditTime: 2021-08-25 22:38:28
+ * @LastEditTime: 2021-08-26 22:54:55
  * @Description:
  */
 import * as path from 'path';
@@ -27,6 +27,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { BullModule } from '@nestjs/bull';
 import { AudioModule } from './jobs/audio/audio.module';
+import { AlbumModule } from './modules/album/album.module';
 
 @Module({
   imports: [
@@ -75,14 +76,15 @@ import { AudioModule } from './jobs/audio/audio.module';
     }),
     ScheduleModule.forRoot(),
     // CatsModule,
-    AudioModule,
-    TasksModule,
+    // AudioModule,
+    // TasksModule,
     HelloModule,
     UsersModule,
     ExceptionModule,
     RoleGuardModule,
     EmailModule,
     AuthModule,
+    AlbumModule,
   ],
 })
 export class AppModule {
