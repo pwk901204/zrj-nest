@@ -1,3 +1,9 @@
+/*
+ * @Author: wkpan2
+ * @Date: 2021-08-07 17:47:48
+ * @LastEditTime: 2021-08-23 09:48:28
+ * @Description:
+ */
 import {
   Controller,
   Get,
@@ -16,8 +22,14 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() param) {
+    const newParam = {
+      ...param,
+      status: true,
+    };
+
+    await this.usersService.create(newParam);
+    return true;
   }
 
   @Get()
@@ -25,18 +37,10 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Post('/many')
+  async createMany(@Body() users) {
+    const newUsers = users.map((user) => ({ ...user, status: true }));
+    await this.usersService.createMany(newUsers);
+    return true;
   }
 }

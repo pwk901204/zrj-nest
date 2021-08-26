@@ -1,7 +1,7 @@
 /*
  * @Author: wkpan2
  * @Date: 2021-08-07 09:18:07
- * @LastEditTime: 2021-08-15 22:27:29
+ * @LastEditTime: 2021-08-26 22:54:55
  * @Description:
  */
 import * as path from 'path';
@@ -22,11 +22,20 @@ import { StatusMonitorModule } from 'nest-status-monitor';
 import { AuthModule } from './modules/auth/auth.module';
 
 import statusMonitorConfig from './config/statusMonitor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { BullModule } from '@nestjs/bull';
+import { AudioModule } from './jobs/audio/audio.module';
+import { AlbumModule } from './modules/album/album.module';
 
 @Module({
   imports: [
     ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
-
+    TypeOrmModule.forRootAsync({
+      useFactory: (config: ConfigService) => config.get('database'),
+      inject: [ConfigService],
+    }),
     StatusMonitorModule.setUp(statusMonitorConfig),
     MailerModule.forRootAsync({
       // useFactory: () => ({
@@ -55,13 +64,27 @@ import statusMonitorConfig from './config/statusMonitor';
     //   entities: [],
     //   synchronize: true,
     // }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+      // useFactory: (config: ConfigService) => ({
+      //   redis: config.get('redis'),
+      // }),
+      // inject: [ConfigService],
+    }),
+    ScheduleModule.forRoot(),
     // CatsModule,
+    // AudioModule,
+    // TasksModule,
     HelloModule,
     UsersModule,
     ExceptionModule,
     RoleGuardModule,
     EmailModule,
     AuthModule,
+    AlbumModule,
   ],
 })
 export class AppModule {
